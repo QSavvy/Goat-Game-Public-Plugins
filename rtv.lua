@@ -30,8 +30,10 @@ plugin.commands['/rtv'] = {
         if ply.data.rtv ~= true then
             rtvcount = rtvcount + 1 
             for _, ply in ipairs(players.getAll()) do
-                ply:sendMessage(string.format("%s wants to RTV! (%s / %s)", person.name, rtvcount, math.ceil(#players.getNonBots() * 0.5)))
-                ply:sendMessage("/rtv to vote for a map change!")
+                if ply.connection ~= nil
+                    ply:sendMessage(string.format("%s wants to RTV! (%s / %s)", person.name, rtvcount, math.ceil(#players.getNonBots() * 0.5)))
+                    ply:sendMessage("/rtv to vote for a map change!")
+                end
             end
             ply.data.rtv = true
         else
