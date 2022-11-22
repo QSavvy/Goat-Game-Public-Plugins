@@ -7,7 +7,7 @@ plugin.description = 'Lets everyone vote to reset game, in my specific case that
 rtvcount = 0
 function plugin.hooks.Logic()
     if rtvcount >= 1 then
-        if rtvcount >= players.getCount() * 0.5 then
+        if rtvcount >= #players.getNonBots() * 0.5 then
             server:reset()
             rtvcount = 0
             for _, ply in ipairs(players.getAll()) do
@@ -30,8 +30,10 @@ plugin.commands['/rtv'] = {
         if ply.data.rtv ~= true then
             rtvcount = rtvcount + 1 
             for _, ply in ipairs(players.getAll()) do
-                ply:sendMessage(string.format("%s wants to RTV! (%s / %s)", person.name, rtvcount, math.ceil(players.getCount() * 0.5)))
-                ply:sendMessage("/rtv to vote for a map change!")
+                if ply.connection ~= nil
+                    ply:sendMessage(string.format("%s wants to RTV! (%s / %s)", person.name, rtvcount, math.ceil(#players.getNonBots() * 0.5)))
+                    ply:sendMessage("/rtv to vote for a map change!")
+                end
             end
             ply.data.rtv = true
         else
